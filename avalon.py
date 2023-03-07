@@ -143,7 +143,9 @@ class Avalon:
     def info(msg, log=False, front="", file=sys.stdout):
         """ print regular information
         """
-        Avalon._print('{}{}[+] INFO: {}{}'.format(front, Avalon.FG.G, str(msg), Avalon.FM.RST), file)
+        Avalon._print(
+            '{}{}[+] INFO: {}{}'.format(front, Avalon.FG.G, str(msg),
+                                        Avalon.FM.RST), file)
         if log and sys.platform != 'win32':
             syslog.syslog(syslog.LOG_INFO, msg)
 
@@ -152,7 +154,11 @@ class Avalon:
         """ print regular information with time stamp
         """
         import datetime
-        Avalon._print('{}{}{}{} [+] INFO: {}{}'.format(front, Avalon.FM.RST, str(datetime.datetime.now()), Avalon.FG.G, str(msg), Avalon.FM.RST), file)
+        Avalon._print(
+            '{}{}{}{} [+] INFO: {}{}'.format(front, Avalon.FM.RST,
+                                             str(datetime.datetime.now()),
+                                             Avalon.FG.G, str(msg),
+                                             Avalon.FM.RST), file)
         if log and sys.platform != 'win32':
             syslog.syslog(syslog.LOG_INFO, msg)
 
@@ -161,7 +167,10 @@ class Avalon:
         """ print information fo debugging
         """
         import datetime
-        Avalon._print('{}{}{} [+] INFO: {}{}'.format(front, Avalon.FG.DGR, str(datetime.datetime.now()), str(msg), Avalon.FM.RST), file)
+        Avalon._print(
+            '{}{}{} [+] INFO: {}{}'.format(front, Avalon.FG.DGR,
+                                           str(datetime.datetime.now()),
+                                           str(msg), Avalon.FM.RST), file)
         if log and sys.platform != 'win32':
             syslog.syslog(syslog.LOG_DEBUG, msg)
 
@@ -169,7 +178,9 @@ class Avalon:
     def warning(msg, log=False, front="", file=sys.stderr):
         """ print a warning message
         """
-        Avalon._print('{}{}{}[!] WARNING: {}{}'.format(front, Avalon.FG.Y, Avalon.FM.BD, str(msg), Avalon.FM.RST), file)
+        Avalon._print(
+            '{}{}{}[!] WARNING: {}{}'.format(front, Avalon.FG.Y, Avalon.FM.BD,
+                                             str(msg), Avalon.FM.RST), file)
         if log and sys.platform != 'win32':
             syslog.syslog(syslog.LOG_WARNING, msg)
 
@@ -177,7 +188,9 @@ class Avalon:
     def error(msg, log=True, front="", file=sys.stderr):
         """ print an error message
         """
-        Avalon._print('{}{}{}[!] ERROR: {}{}'.format(front, Avalon.FG.R, Avalon.FM.BD, str(msg), Avalon.FM.RST), file)
+        Avalon._print(
+            '{}{}{}[!] ERROR: {}{}'.format(front, Avalon.FG.R, Avalon.FM.BD,
+                                           str(msg), Avalon.FM.RST), file)
         if log and sys.platform != 'win32':
             syslog.syslog(syslog.LOG_WARNING, msg)
 
@@ -185,7 +198,9 @@ class Avalon:
     def debug(msg, log=True, front="", file=sys.stderr):
         """ print a debug message
         """
-        Avalon._print('{}{}{}[*] DEBUG: {}{}'.format(front, Avalon.FG.R, Avalon.FM.RDM, str(msg), Avalon.FM.RST), file)
+        Avalon._print(
+            '{}{}{}[*] DEBUG: {}{}'.format(front, Avalon.FG.R, Avalon.FM.RDM,
+                                           str(msg), Avalon.FM.RST), file)
         if log and sys.platform != 'win32':
             syslog.syslog(syslog.LOG_DEBUG, msg)
 
@@ -198,7 +213,10 @@ class Avalon:
         if batch:
             return default
 
-        print('{}{}{}[?] USER: {}{}'.format(front, Avalon.FG.C, Avalon.FM.BD, msg, Avalon.FM.RST), end='', file=file)
+        print('{}{}{}[?] USER: {}{}'.format(front, Avalon.FG.C, Avalon.FM.BD,
+                                            msg, Avalon.FM.RST),
+              end='',
+              file=file)
         return input()
 
     @staticmethod
@@ -216,7 +234,7 @@ class Avalon:
 
         elif default is False:
             while True:
-                ans = Avalon.gets(msg + ' [y/N]: ',front=front)
+                ans = Avalon.gets(msg + ' [y/N]: ', front=front)
                 if ans == '' or ans[0].upper() == 'N':
                     return False
                 elif ans[0].upper() == 'Y':
@@ -225,7 +243,7 @@ class Avalon:
                     Avalon.error('Invalid Input!')
         elif default is True:
             while True:
-                ans = Avalon.gets(msg + ' [Y/n]: ',front=front)
+                ans = Avalon.gets(msg + ' [Y/n]: ', front=front)
                 if ans == '' or ans[0].upper() == 'Y':
                     return True
                 elif ans[0].upper() == 'N':
@@ -233,4 +251,5 @@ class Avalon:
                 else:
                     Avalon.error('Invalid Input!')
         else:
-            raise TypeError('invalid type for positional argument: \' default\'')
+            raise TypeError(
+                'invalid type for positional argument: \' default\'')

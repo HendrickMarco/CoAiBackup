@@ -1,22 +1,27 @@
-# Project Archived  
-本项目已经年久失修，且本人早已不再使用贴吧，亦无继续维护/重构的计划，现转为Archive模式。建议使用其他项目或积极维护的fork。  
+# TiebaBackup
 
-### 使用方法 ###
+Forked from `cnwangjihe/TiebaBackup`
 
-linux:
+## Update
+
+- 2023.03.07 修改`css`文件，使网页更美观，并改善网页缩放
+- 2023.03.07 修复`KeyError`报错问题，现已可以正常备份
+
+## Usage
+
+### Linux
 
 ```bash
-apt-get install python3 python3-pip
+sudo apt install python3 python3-pip
 pip3 install -r requirements.txt
 python3 main.py
 ```
 
-windows:
+### Windows
 
-在[官网](https://www.python.org/downloads/)下载python3.7或以上版本
+Download Python >= 3.7 from [here](https://www.python.org/downloads/)
 
 ```cmd
 pip install -r requirements.txt
-python3 main.py
+python main.py
 ```
-
