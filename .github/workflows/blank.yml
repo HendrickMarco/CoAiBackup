@@ -1,0 +1,32 @@
+name: Generate Directory CSS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate_css:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Generate directory CSS
+        run: |
+          echo "/* Auto-generated directory CSS */" > directory.css
+          echo "ul { list-style-type: none; }" >> directory.css
+          echo "li { margin-bottom: 5px; }" >> directory.css
+          echo "li a { text-decoration: none; }" >> directory.css
+          echo "li a:hover { text-decoration: underline; }" >> directory.css
+          echo "li ul { margin-left: 20px; }" >> directory.css
+          find . -type d -exec bash -c 'echo "li a[href=\"./{}\"]::before { content: \"📁 \"; }" >> directory.css' \;
+          find . -type f -name "*.html" -exec bash -c 'echo "li a[href=\"./{}\"]::before { content: \"📄 \"; }" >> directory.css' \;
+
+      - name: Commit and push updated CSS file
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@users.noreply.github.com'
+          git add directory.css
+          git commit -m "Auto-generate directory CSS"
+          git push
