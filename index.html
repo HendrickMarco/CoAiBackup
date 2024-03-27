@@ -1,45 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小说网站</title>
-    <link rel="stylesheet" href="directory.css">
-    <style>
-        /* Additional styles can be added here */
-        /* Style for search box */
-        #search-box {
-            margin: 20px 0;
-            padding: 10px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小说列表</title>
+  <link rel="stylesheet" href="directory.css">
 </head>
 <body>
-    <!-- Search box -->
-    <input type="text" id="search-box" placeholder="Search novels...">
-
-    <script>
-        // JavaScript code to dynamically load novel links from directory.css
-        document.addEventListener("DOMContentLoaded", function() {
-            var styleSheets = document.styleSheets;
-            for (var i = 0; i < styleSheets.length; i++) {
-                var rules = styleSheets[i].cssRules;
-                for (var j = 0; j < rules.length; j++) {
-                    var rule = rules[j];
-                    if (rule.selectorText && rule.selectorText.startsWith("ul#novel-list li a[href=")) {
-                        var link = document.createElement("a");
-                        link.href = rule.selectorText.substring(22, rule.selectorText.length - 2);
-                        link.textContent = rule.style.content.replace(/['"]+/g, ''); // Remove surrounding quotes
-                        document.body.appendChild(link);
-                        document.body.appendChild(document.createElement("br")); // Add line break
-                    }
-                }
-            }
-        });
-    </script>
+  <h1>小说列表</h1>
+  <ul id="novel-list">
+    {% for file in files %}
+      <li>
+        <a href="{{ file.url }}">{{ file.name }}</a>
+        {% if file.isDirectory %}
+          <ul>
+            {% for child in file.children %}
+              <li><a href="{{ child.url }}">{{ child.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 </body>
 </html>
