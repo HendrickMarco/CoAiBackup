@@ -22,9 +22,24 @@
     <!-- Search box -->
     <input type="text" id="search-box" placeholder="Search novels...">
 
-    <!-- Novel list -->
-    <ul id="novel-list">
-        <!-- Novel links will be dynamically generated here -->
-    </ul>
+    <script>
+        // JavaScript code to dynamically load novel links from directory.css
+        document.addEventListener("DOMContentLoaded", function() {
+            var styleSheets = document.styleSheets;
+            for (var i = 0; i < styleSheets.length; i++) {
+                var rules = styleSheets[i].cssRules;
+                for (var j = 0; j < rules.length; j++) {
+                    var rule = rules[j];
+                    if (rule.selectorText && rule.selectorText.startsWith("ul#novel-list li a[href=")) {
+                        var link = document.createElement("a");
+                        link.href = rule.selectorText.substring(22, rule.selectorText.length - 2);
+                        link.textContent = rule.style.content.replace(/['"]+/g, ''); // Remove surrounding quotes
+                        document.body.appendChild(link);
+                        document.body.appendChild(document.createElement("br")); // Add line break
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
