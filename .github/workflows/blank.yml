@@ -15,13 +15,22 @@ jobs:
     - name: Generate directory
       run: |
         echo "/* Generated directory */" > directory.css
+        echo "ul#novel-list { list-style-type: none; }" >> directory.css
 
+        echo "ul#novel-list {" >> directory.css
         for dir in $(find . -type d -name "柯*" | sort); do
-          echo ".${dir//\//\\}" >> directory.css
+          dir="${dir:2}" # remove leading './'
+          echo "  li { margin-bottom: 5px; }" >> directory.css
+          echo "  li a[href=\"$dir\"] { text-decoration: none; }" >> directory.css
+          echo "  li a[href=\"$dir\"]:hover { text-decoration: underline; }" >> directory.css
+          echo "  li ul { margin-left: 20px; }" >> directory.css
+          echo "  li a[href=\"$dir\"]::before { content: \"📁 \"; }" >> directory.css
+          echo "  li a[href=\"$dir\"] { display: block; }" >> directory.css
           for file in $(find "$dir" -type f -name "*.html"); do
-            echo "  a[href=\"${file//\//\\}\"]::before { content: \"${dir//\//\\}\"; }" >> directory.css
+            echo "  li a[href=\"$file\"]::before { content: \"📄 \"; }" >> directory.css
           done
         done
+        echo "}" >> directory.css
 
     - name: Commit changes
       run: |
