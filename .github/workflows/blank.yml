@@ -1,4 +1,4 @@
-name: Generate Directory CSS
+name: Generate Directory
 
 on:
   push:
@@ -6,28 +6,28 @@ on:
       - master
 
 jobs:
-  generate_css:
+  generate-directory:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Generate directory CSS
-        run: |
-          echo "/* Auto-generated directory CSS */" > directory.css
-          echo "ul { list-style-type: none; }" >> directory.css
-          echo "li { margin-bottom: 5px; }" >> directory.css
-          echo "li a { text-decoration: none; }" >> directory.css
-          echo "li a:hover { text-decoration: underline; }" >> directory.css
-          echo "li ul { margin-left: 20px; }" >> directory.css
-          find . -type d -name "柯哀*" -exec bash -c 'dir="{}"; dir="${dir:2}"; echo "li a[href=\"./{}\"]::before { content: \"📁 \"; }" >> directory.css; find "{}" -maxdepth 1 -type f -name "*.html" -exec bash -c 'echo "li a[href=\"./{}\"]::before { content: \"📄 \"; }" >> directory.css' \; \;
 
-      - name: Commit and push updated CSS file
-        run: |
-          git config user.name 'GitHub Actions'
-          git config user.email 'actions@users.noreply.github.com'
-          git add directory.css
-          git commit -m "Auto-generate directory CSS"
-          git push origin master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Generate directory
+      run: |
+        echo "/* Generated directory */" > directory.css
+
+        for dir in $(find . -type d -name "柯*" | sort); do
+          echo ".${dir//\//\\}" >> directory.css
+          for file in $(find "$dir" -type f -name "*.html"); do
+            echo "  a[href=\"${file//\//\\}\"]::before { content: \"${dir//\//\\}\"; }" >> directory.css
+          done
+        done
+
+    - name: Commit changes
+      run: |
+        git add directory.css
+        git commit -m "Generate directory"
+
+    - name: Push changes
+      run: |
+        git push
