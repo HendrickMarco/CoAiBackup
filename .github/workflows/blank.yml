@@ -20,7 +20,7 @@ jobs:
           echo "li a { text-decoration: none; }" >> directory.css
           echo "li a:hover { text-decoration: underline; }" >> directory.css
           echo "li ul { margin-left: 20px; }" >> directory.css
-          find . -type d -name "柯哀*" -exec bash -c 'dir="{}"; dir="${dir:2}"; echo "li a[href=\"./{}\"]::before { content: \"📁 \"; }" >> directory.css; find \"{}\" -type f -name "*.html" -exec bash -c 'echo "li a[href=\"./{}\"]::before { content: \"📄 \"; }" >> directory.css' \;' \;
+          find . -type d -name "柯*" -exec bash -c 'dir="{}"; dir="${dir:2}"; echo "li a[href=\"./{}\"]::before { content: \"📁 \"; }" >> directory.css; find \"{}\" -type f -name "*.html" -exec bash -c 'echo "li a[href=\"./{}\"]::before { content: \"📄 \"; }" >> directory.css; echo "li a[href=\"./{}\"] {{ display: block; }}" >> directory.css' \;' \;
 
       - name: Commit and push updated CSS file
         run: |
