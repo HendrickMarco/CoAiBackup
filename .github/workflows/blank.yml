@@ -26,7 +26,7 @@ jobs:
     - name: Commit changes
       run: |
         git add directory.css
-        git commit -m "Generate directory"
+        git commit --author="GitHub Action <actions@github.com>" -m "Generate directory"
 
     - name: Push changes
       run: |
