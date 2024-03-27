@@ -25,9 +25,12 @@ jobs:
 
     - name: Commit changes
       run: |
+        git config user.name 'GitHub Action'
+        git config user.email 'actions@github.com'
         git add directory.css
-        git commit --author="GitHub Action <actions@github.com>" -m "Generate directory"
+        git commit -m "Generate directory"
 
     - name: Push changes
-      run: |
-        git push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
