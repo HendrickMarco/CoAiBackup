@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory Listing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 5px;
+        }
+        ul li a {
+            text-decoration: none;
+        }
+        ul li a:hover {
+            text-decoration: underline;
+        }
+        ul li ul {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Directory Listing</h1>
+    <ul id="directory-list"></ul>
+
+    <script>
+        // 递归函数来扫描文件夹
+        function scanFolder(folderPath, parentElement) {
+            // 读取文件夹内容
+            fetch(folderPath)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = doc.querySelectorAll('a');
+
+                    const ul = document.createElement('ul');
+                    parentElement.appendChild(ul);
+
+                    links.forEach(link => {
+                        const filePath = link.getAttribute('href');
+                        const fileName = filePath.split('/').pop();
+
+                        if (filePath.endsWith('/')) {
+                            // 如果是文件夹，则递归扫描
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.textContent = fileName;
+                            a.href = filePath;
+                            li.appendChild(a);
+                            ul.appendChild(li);
+                            scanFolder(filePath, li);
+                        } else if (fileName !== 'index.html') {
+                            // 如果是文件，且不是index.html，则添加链接
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.textContent = fileName;
+                            a.href = filePath;
+                            li.appendChild(a);
+                            ul.appendChild(li);
+                        }
+                    });
+                });
+        }
+
+        // 初始化
+        window.onload = function() {
+            const directoryList = document.getElementById('directory-list');
+            scanFolder('.', directoryList); // 从当前目录开始扫描
+        };
+    </script>
+</body>
+</html>
