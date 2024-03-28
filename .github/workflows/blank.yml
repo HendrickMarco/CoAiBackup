@@ -1,4 +1,4 @@
-name: Generate Directory
+name: Generate Index
 
 on:
   push:
@@ -6,39 +6,31 @@ on:
       - master
 
 jobs:
-  generate-directory:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Generate directory
-      run: |
-        echo "/* Generated directory */" > directory.css
-        echo "ul#novel-list { list-style-type: none; }" >> directory.css
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-        echo "ul#novel-list {" >> directory.css
-        for dir in $(find . -type d -name "柯*" | sort); do
-          dir="${dir:2}" # remove leading './'
-          echo "  li { margin-bottom: 5px; }" >> directory.css
-          echo "  li a[href=\"$dir\"] { text-decoration: none; }" >> directory.css
-          echo "  li a[href=\"$dir\"]:hover { text-decoration: underline; }" >> directory.css
-          echo "  li ul { margin-left: 20px; }" >> directory.css
-          echo "  li a[href=\"$dir\"]::before { content: \"📁 \"; }" >> directory.css
-          echo "  li a[href=\"$dir\"] { display: block; }" >> directory.css
-          for file in $(find "$dir" -type f -name "*.html"); do
-            echo "  li a[href=\"$file\"]::before { content: \"📄 \"; }" >> directory.css
-          done
-        done
-        echo "}" >> directory.css
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run script to generate index.html
+      run: node generate-index.js
 
     - name: Commit changes
       run: |
-        git config user.name 'GitHub Action'
-        git config user.email 'actions@github.com'
-        git add directory.css
-        git commit -m "Generate directory"
-
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "GitHub Actions"
+        git add index.html
+        git commit -m "Generate index.html"
+    
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
