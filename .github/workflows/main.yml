@@ -21,9 +21,12 @@ jobs:
         with:
           node-version: '16'
 
-      # If you do not need npm dependencies, you can skip this step
-      # - name: Install dependencies
-      #   run: npm install
-
       - name: Run the generate-index.js script
         run: node generate-index.js
+
+      # 上传生成的 index.html 文件作为构建工件
+      - name: Upload generated index.html as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: generated-html
+          path: index.html
