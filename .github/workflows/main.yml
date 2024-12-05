@@ -1,30 +1,28 @@
-name: Run JavaScript Program
+name: Generate Index
 
 on:
   push:
     branches:
-      - master  # 触发事件为 master 分支的推送
+      - master
   pull_request:
     branches:
-      - master  # 拉取请求也触发 master 分支的工作流
+      - master
 
 jobs:
-  run-js:
-    runs-on: ubuntu-latest  # 使用最新的 Ubuntu 系统
+  generate-index:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # 检出代码
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # 设置 Node.js 环境
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'  # 选择 Node.js 版本
+          node-version: '16'
 
       - name: Install dependencies
-        run: |
-          npm install  # 安装项目依赖
+        run: npm install
 
-      - name: Run JavaScript program
-        run: |
-          node generate-index.js  # 运行你的 generate-index.js 脚本
+      - name: Run the generate-index.js script
+        run: node generate-index.js
