@@ -21,8 +21,9 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install dependencies
-        run: npm install
+      # If you do not need npm dependencies, you can skip this step
+      # - name: Install dependencies
+      #   run: npm install
 
       - name: Run the generate-index.js script
         run: node generate-index.js
