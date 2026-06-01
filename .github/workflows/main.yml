@@ -1,4 +1,4 @@
-name: Generate Index
+name: Generate index
 
 on:
   push:
@@ -7,26 +7,42 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   generate-index:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '22'
 
-      - name: Run the generate-index.js script
+      - name: Generate index.html
         run: node generate-index.js
 
-      # 上传生成的 index.html 文件作为构建工件
-      - name: Upload generated index.html as artifact
-        uses: actions/upload-artifact@v3
+      - name: Verify generated index is current
+        if: github.event_name == 'pull_request'
+        run: git diff --exit-code -- index.html generate-index.js
+
+      - name: Commit generated index
+        if: github.event_name == 'push'
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: generated-html
+          commit_message: 'chore: update generated index'
+          file_pattern: index.html
+
+      - name: Upload generated index artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-index
           path: index.html
