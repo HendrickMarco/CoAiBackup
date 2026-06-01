@@ -4,24 +4,94 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="柯哀与名柯文章归档索引">
+  <script defer src="https://a.loli.za.org/script.js" data-website-id="13c0284e-a2e7-496d-8533-477dc7a1fcd0"></script>
   <title>CoAiBackup 文章索引</title>
+  <script>
+    (() => {
+      const savedTheme = localStorage.getItem('coaibackup-theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        document.documentElement.dataset.theme = savedTheme;
+      }
+    })();
+  </script>
   <style>
     :root {
       color-scheme: light;
       --bg: #f6f3ef;
+      --bg-soft: #efe8df;
       --surface: #ffffff;
-      --surface-muted: #f0ece5;
-      --text: #24211f;
-      --muted: #6d655e;
-      --line: #ded7cf;
+      --surface-raised: rgba(255, 255, 255, 0.88);
+      --surface-muted: #f1ece5;
+      --text: #211f1d;
+      --muted: #6e655e;
+      --line: #ded5ca;
+      --line-strong: #c9baad;
       --accent: #b2342b;
       --accent-strong: #84231f;
+      --accent-soft: #fff2ef;
       --blue: #225e76;
+      --blue-soft: #e9f2f5;
       --shadow: 0 18px 50px rgba(41, 32, 25, 0.12);
+      --toolbar-bg: rgba(246, 243, 239, 0.92);
+      --footer-bg: #211f1d;
+      --footer-text: #e7dfd6;
+      --footer-link: #ffd4c7;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #141312;
+      --bg-soft: #1b1917;
+      --surface: #201e1c;
+      --surface-raised: rgba(37, 34, 31, 0.88);
+      --surface-muted: #2a2623;
+      --text: #f0ebe5;
+      --muted: #b7aca2;
+      --line: #3b352f;
+      --line-strong: #5b5047;
+      --accent: #ff8a78;
+      --accent-strong: #ffb1a5;
+      --accent-soft: #3a211e;
+      --blue: #7cc7df;
+      --blue-soft: #1d3138;
+      --shadow: 0 20px 54px rgba(0, 0, 0, 0.38);
+      --toolbar-bg: rgba(20, 19, 18, 0.90);
+      --footer-bg: #0f0e0d;
+      --footer-text: #d8d0c8;
+      --footer-link: #ffb1a5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #141312;
+        --bg-soft: #1b1917;
+        --surface: #201e1c;
+        --surface-raised: rgba(37, 34, 31, 0.88);
+        --surface-muted: #2a2623;
+        --text: #f0ebe5;
+        --muted: #b7aca2;
+        --line: #3b352f;
+        --line-strong: #5b5047;
+        --accent: #ff8a78;
+        --accent-strong: #ffb1a5;
+        --accent-soft: #3a211e;
+        --blue: #7cc7df;
+        --blue-soft: #1d3138;
+        --shadow: 0 20px 54px rgba(0, 0, 0, 0.38);
+        --toolbar-bg: rgba(20, 19, 18, 0.90);
+        --footer-bg: #0f0e0d;
+        --footer-text: #d8d0c8;
+        --footer-link: #ffb1a5;
+      }
     }
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      background: var(--bg);
     }
 
     body {
@@ -30,11 +100,13 @@
       display: flex;
       flex-direction: column;
       background:
-        linear-gradient(180deg, rgba(178, 52, 43, 0.10), rgba(34, 94, 118, 0.06) 340px, transparent 620px),
+        linear-gradient(180deg, rgba(178, 52, 43, 0.10), rgba(34, 94, 118, 0.08) 360px, transparent 680px),
+        radial-gradient(circle at 50% -220px, rgba(255, 255, 255, 0.36), transparent 430px),
         var(--bg);
       color: var(--text);
       font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
       line-height: 1.6;
+      transition: background-color 180ms ease, color 180ms ease;
     }
 
     a {
@@ -42,61 +114,130 @@
       text-decoration: none;
     }
 
+    button,
+    input {
+      font: inherit;
+    }
+
     .site-header {
-      padding: 44px 20px 24px;
-      border-bottom: 1px solid rgba(132, 35, 31, 0.14);
+      padding: 28px 20px 26px;
+      border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
     }
 
     .header-inner,
     .page-shell {
-      width: min(1120px, calc(100% - 40px));
+      width: min(1200px, calc(100% - 40px));
       margin: 0 auto;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent-strong);
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 15%, transparent);
+    }
+
+    .theme-toggle,
+    .density-button,
+    .filter-button {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-raised);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+    }
+
+    .theme-toggle:hover,
+    .density-button:hover,
+    .filter-button:hover {
+      border-color: color-mix(in srgb, var(--accent) 46%, var(--line));
+      color: var(--accent-strong);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+      gap: 34px;
+      align-items: end;
     }
 
     .eyebrow {
       margin: 0 0 8px;
-      color: var(--accent-strong);
+      color: var(--blue);
       font-size: 0.88rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0;
     }
 
     h1 {
+      max-width: 720px;
       margin: 0;
-      font-size: 2.15rem;
-      line-height: 1.2;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.12;
       letter-spacing: 0;
     }
 
     .header-copy {
-      max-width: 720px;
-      margin: 12px 0 0;
+      max-width: 680px;
+      margin: 16px 0 0;
       color: var(--muted);
-      font-size: 1rem;
+      font-size: 1.02rem;
     }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 26px;
-      max-width: 680px;
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
 
     .stat {
-      min-height: 82px;
+      min-height: 78px;
       padding: 14px 16px;
-      background: rgba(255, 255, 255, 0.68);
-      border: 1px solid rgba(132, 35, 31, 0.13);
+      background: var(--surface-raised);
+      border: 1px solid var(--line);
       border-radius: 8px;
+      box-shadow: 0 12px 34px rgba(41, 32, 25, 0.06);
     }
 
     .stat-value {
       display: block;
       color: var(--accent-strong);
-      font-size: 1.55rem;
-      font-weight: 800;
-      line-height: 1.15;
+      font-size: 1.5rem;
+      font-weight: 850;
+      line-height: 1.12;
     }
 
     .stat-label {
@@ -108,7 +249,7 @@
 
     main {
       flex: 1;
-      padding: 28px 0 42px;
+      padding: 28px 0 44px;
     }
 
     .toolbar {
@@ -117,22 +258,23 @@
       z-index: 3;
       padding: 14px;
       margin-bottom: 18px;
-      background: rgba(246, 243, 239, 0.92);
+      background: var(--toolbar-bg);
       border: 1px solid var(--line);
       border-radius: 8px;
       box-shadow: 0 10px 30px rgba(41, 32, 25, 0.08);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
     }
 
     .search-row {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto auto;
       gap: 12px;
       align-items: center;
     }
 
     .search-box {
       position: relative;
+      min-width: 0;
     }
 
     .search-box svg {
@@ -148,27 +290,55 @@
 
     #searchInput {
       width: 100%;
-      height: 46px;
+      height: 48px;
       padding: 0 16px 0 44px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--surface);
       color: var(--text);
-      font: inherit;
       outline: none;
+    }
+
+    #searchInput::placeholder {
+      color: color-mix(in srgb, var(--muted) 78%, transparent);
     }
 
     #searchInput:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(178, 52, 43, 0.14);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
     }
 
     .result-count {
-      min-width: 96px;
+      min-width: 86px;
       color: var(--muted);
       font-size: 0.92rem;
+      font-variant-numeric: tabular-nums;
       text-align: right;
       white-space: nowrap;
+    }
+
+    .density-control {
+      display: inline-grid;
+      grid-template-columns: repeat(2, auto);
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-muted);
+    }
+
+    .density-button {
+      min-height: 32px;
+      padding: 4px 10px;
+      border-color: transparent;
+      background: transparent;
+      font-size: 0.86rem;
+    }
+
+    .density-button.is-active {
+      background: var(--surface);
+      color: var(--accent-strong);
+      box-shadow: 0 5px 16px rgba(41, 32, 25, 0.08);
     }
 
     .filters {
@@ -179,32 +349,24 @@
     }
 
     .filter-button {
-      min-height: 34px;
       padding: 6px 12px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--surface);
-      color: var(--muted);
-      font: inherit;
       font-size: 0.9rem;
-      cursor: pointer;
     }
 
-    .filter-button:hover,
     .filter-button.is-active {
-      border-color: rgba(178, 52, 43, 0.38);
-      background: #fff5f2;
+      border-color: color-mix(in srgb, var(--accent) 44%, var(--line));
+      background: var(--accent-soft);
       color: var(--accent-strong);
     }
 
     .filter-button span {
       color: var(--blue);
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .article-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 12px;
       padding: 0;
       margin: 0;
@@ -212,16 +374,16 @@
     }
 
     .article-card {
-      min-height: 92px;
+      min-height: 98px;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 8px;
       box-shadow: 0 8px 22px rgba(41, 32, 25, 0.06);
-      transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+      transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
     }
 
     .article-card:hover {
-      border-color: rgba(178, 52, 43, 0.36);
+      border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
       box-shadow: var(--shadow);
       transform: translateY(-2px);
     }
@@ -232,18 +394,18 @@
 
     .article-card a {
       display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 12px;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 13px;
       align-items: center;
-      min-height: 92px;
-      padding: 15px;
+      min-height: 98px;
+      padding: 16px;
     }
 
     .article-number {
       width: 46px;
       color: var(--accent);
       font-size: 0.82rem;
-      font-weight: 800;
+      font-weight: 850;
       font-variant-numeric: tabular-nums;
     }
 
@@ -256,32 +418,72 @@
       overflow: hidden;
       color: var(--text);
       font-size: 0.98rem;
-      font-weight: 700;
+      font-weight: 750;
       line-height: 1.45;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
 
     .article-meta {
-      display: inline-block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      margin-top: 8px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 0.8rem;
+      font-weight: 700;
     }
 
     .article-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--surface-muted);
       color: var(--blue);
-      font-size: 1.45rem;
-      line-height: 1;
+    }
+
+    .article-arrow svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    :root[data-density="compact"] .article-list {
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 9px;
+    }
+
+    :root[data-density="compact"] .article-card,
+    :root[data-density="compact"] .article-card a {
+      min-height: 76px;
+    }
+
+    :root[data-density="compact"] .article-card a {
+      padding: 12px;
+    }
+
+    :root[data-density="compact"] .article-title {
+      font-size: 0.92rem;
+      -webkit-line-clamp: 1;
+    }
+
+    :root[data-density="compact"] .article-meta,
+    :root[data-density="compact"] .article-arrow {
+      display: none;
     }
 
     .empty-state {
       display: none;
       padding: 42px 18px;
       margin-top: 14px;
-      border: 1px dashed var(--line);
+      border: 1px dashed var(--line-strong);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.62);
+      background: color-mix(in srgb, var(--surface) 72%, transparent);
       color: var(--muted);
       text-align: center;
     }
@@ -291,47 +493,172 @@
     }
 
     .site-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
       padding: 24px 20px;
       border-top: 1px solid var(--line);
-      background: #211f1d;
-      color: #e7dfd6;
+      background: var(--footer-bg);
+      color: var(--footer-text);
       text-align: center;
     }
 
     .site-footer a {
-      color: #ffd4c7;
-      font-weight: 700;
+      color: var(--footer-link);
+      font-weight: 800;
     }
 
-    @media (max-width: 720px) {
+    .footer-separator {
+      color: color-mix(in srgb, var(--footer-text) 56%, transparent);
+    }
+
+    @media (min-width: 1180px) {
+      .article-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      :root[data-density="compact"] .article-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
       .site-header {
-        padding-top: 30px;
+        padding-top: 22px;
       }
 
       .header-inner,
       .page-shell {
-        width: min(100% - 28px, 1120px);
+        width: min(100% - 28px, 1200px);
+      }
+
+      .header-top {
+        margin-bottom: 24px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .stat {
+        min-height: 74px;
+        padding: 12px;
+      }
+
+      .search-row {
+        grid-template-columns: 1fr auto;
+      }
+
+      .density-control {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        background:
+          linear-gradient(180deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 360px),
+          var(--bg);
+      }
+
+      .theme-toggle span {
+        display: none;
+      }
+
+      .theme-toggle {
+        width: 42px;
+        justify-content: center;
+        padding-inline: 0;
       }
 
       h1 {
-        font-size: 1.65rem;
+        font-size: 1.8rem;
       }
 
-      .stats,
+      .header-copy {
+        font-size: 0.96rem;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        padding-top: 18px;
+      }
+
+      .toolbar {
+        position: static;
+        padding: 12px;
+      }
+
       .search-row {
         grid-template-columns: 1fr;
       }
 
       .result-count {
+        min-width: 0;
         text-align: left;
       }
 
-      .toolbar {
-        position: static;
+      .filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: thin;
       }
 
-      .article-list {
+      .filter-button {
+        flex: 0 0 auto;
+      }
+
+      .site-footer {
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .footer-separator {
+        display: none;
+      }
+
+      .article-list,
+      :root[data-density="compact"] .article-list {
         grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .article-card,
+      .article-card a,
+      :root[data-density="compact"] .article-card,
+      :root[data-density="compact"] .article-card a {
+        min-height: 86px;
+      }
+
+      .article-card a,
+      :root[data-density="compact"] .article-card a {
+        grid-template-columns: minmax(0, 1fr) auto;
+        padding: 14px;
+      }
+
+      .article-number {
+        display: none;
+      }
+
+      .article-title,
+      :root[data-density="compact"] .article-title {
+        font-size: 0.95rem;
+        -webkit-line-clamp: 2;
+      }
+
+      :root[data-density="compact"] .article-meta,
+      :root[data-density="compact"] .article-arrow {
+        display: inline-flex;
       }
     }
   </style>
@@ -339,21 +666,39 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <p class="eyebrow">CoAiBackup</p>
-      <h1>文章归档索引</h1>
-      <p class="header-copy">按目录自动生成的静态索引，支持关键词搜索和分类筛选。</p>
-      <div class="stats" aria-label="站点统计">
-        <div class="stat">
-          <span class="stat-value">172</span>
-          <span class="stat-label">篇文章</span>
+      <div class="header-top">
+        <div class="brand-mark">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>CoAiBackup</span>
         </div>
-        <div class="stat">
-          <span class="stat-value">4</span>
-          <span class="stat-label">个分类</span>
+        <button class="theme-toggle" type="button" id="themeToggle" aria-label="切换明暗主题">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path class="theme-icon-sun" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.7-5.7 1.4-1.4M4.9 19.1l1.4-1.4m0-11.4L4.9 4.9m14.2 14.2-1.4-1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path class="theme-icon-moon" d="M20 14.6A7.6 7.6 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6Z" fill="currentColor"/>
+          </svg>
+          <span id="themeLabel">深色</span>
+        </button>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">柯哀与名柯文章备份</p>
+          <h1>文章归档索引</h1>
+          <p class="header-copy">稳定保存的本地静态目录，按文章标题和分类快速定位。</p>
         </div>
-        <div class="stat">
-          <span class="stat-value">本地</span>
-          <span class="stat-label">静态归档</span>
+        <div class="stats" aria-label="站点统计">
+          <div class="stat">
+            <span class="stat-value">172</span>
+            <span class="stat-label">篇文章</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">4</span>
+            <span class="stat-label">个分类</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">HTML</span>
+            <span class="stat-label">静态备份</span>
+          </div>
         </div>
       </div>
     </div>
@@ -370,6 +715,10 @@
             <input type="search" id="searchInput" autocomplete="off" placeholder="搜索标题、分类或关键词">
           </label>
           <div class="result-count" id="resultCount">172 篇</div>
+          <div class="density-control" aria-label="视图密度">
+            <button class="density-button is-active" type="button" data-density="comfortable">舒适</button>
+            <button class="density-button" type="button" data-density="compact">紧凑</button>
+          </div>
         </div>
         <div class="filters" id="filters" aria-label="分类">
           <button class="filter-button is-active" type="button" data-category="all">全部 <span>172</span></button>
@@ -389,7 +738,11 @@
                 <span class="article-title">柯哀--【柯哀王道】分析一下第1043话：吃比护醋的柯南同学</span>
                 <span class="article-meta">柯哀</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--“鹤”在柯南中的意向，对柯哀的立意" data-category="柯哀分析文">
@@ -399,7 +752,11 @@
                 <span class="article-title">柯哀分析文--“鹤”在柯南中的意向，对柯哀的立意</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--“新志初遇论”逐渐有戏了" data-category="柯哀分析文">
@@ -409,7 +766,11 @@
                 <span class="article-title">柯哀分析文--“新志初遇论”逐渐有戏了</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--[暴论]贝姐有没有可能“干妈生锈”" data-category="柯哀分析文">
@@ -419,7 +780,11 @@
                 <span class="article-title">柯哀分析文--[暴论]贝姐有没有可能“干妈生锈”</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--「猜想」2024年朗姆篇收尾展望" data-category="柯哀分析文">
@@ -429,7 +794,11 @@
                 <span class="article-title">柯哀分析文--「猜想」2024年朗姆篇收尾展望</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--「随想」大阪篇连载的发散分析" data-category="柯哀分析文">
@@ -439,7 +808,11 @@
                 <span class="article-title">柯哀分析文--「随想」大阪篇连载的发散分析</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【暴论预警】水下恋爱喜剧，就是直接表明了柯对哀的箭头" data-category="柯哀分析文">
@@ -449,7 +822,11 @@
                 <span class="article-title">柯哀分析文--【暴论预警】水下恋爱喜剧，就是直接表明了柯对哀的箭头</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【番外】手套＝初遇+错位？论红黑篇的两次手套" data-category="柯哀分析文">
@@ -459,7 +836,11 @@
                 <span class="article-title">柯哀分析文--【番外】手套＝初遇+错位？论红黑篇的两次手套</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【访谈翻译】2004年《Love Conan》青山访谈" data-category="柯哀分析文">
@@ -469,7 +850,11 @@
                 <span class="article-title">柯哀分析文--【访谈翻译】2004年《Love Conan》青山访谈</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【访谈翻译】TV动画抓帧漫画系列" data-category="柯哀分析文">
@@ -479,7 +864,11 @@
                 <span class="article-title">柯哀分析文--【访谈翻译】TV动画抓帧漫画系列</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【红黑对决】谁是红黑篇最大的内鬼？被误解但不完全是误解的詹姆斯" data-category="柯哀分析文">
@@ -489,7 +878,11 @@
                 <span class="article-title">柯哀分析文--【红黑对决】谁是红黑篇最大的内鬼？被误解但不完全是误解的詹姆斯</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【假设性原则】剧场版在漫画中可能存在的位置与是否进入正史的探讨" data-category="柯哀分析文">
@@ -499,7 +892,11 @@
                 <span class="article-title">柯哀分析文--【假设性原则】剧场版在漫画中可能存在的位置与是否进入正史的探讨</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【假设性原则2】特别篇_OVA等进入的正史的情况" data-category="柯哀分析文">
@@ -509,7 +906,11 @@
                 <span class="article-title">柯哀分析文--【假设性原则2】特别篇_OVA等进入的正史的情况</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【柯哀分析】红修篇的影子女主哀" data-category="柯哀分析文">
@@ -519,7 +920,11 @@
                 <span class="article-title">柯哀分析文--【柯哀分析】红修篇的影子女主哀</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【老粉首贴拜吧】从边边角角挖出来的带神话元素的一些预言向暴论" data-category="柯哀分析文">
@@ -529,7 +934,11 @@
                 <span class="article-title">柯哀分析文--【老粉首贴拜吧】从边边角角挖出来的带神话元素的一些预言向暴论</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【漫画讨论】“想要一直呆在你身边啊？”终成73爱情观" data-category="柯哀分析文">
@@ -539,7 +948,11 @@
                 <span class="article-title">柯哀分析文--【漫画讨论】“想要一直呆在你身边啊？”终成73爱情观</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【名柯十年前】那些即将被柯南淡忘的记忆" data-category="柯哀分析文">
@@ -549,7 +962,11 @@
                 <span class="article-title">柯哀分析文--【名柯十年前】那些即将被柯南淡忘的记忆</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【抛砖引玉】有人研究过柯南取名时背后书架上的书吗" data-category="柯哀分析文">
@@ -559,7 +976,11 @@
                 <span class="article-title">柯哀分析文--【抛砖引玉】有人研究过柯南取名时背后书架上的书吗</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【青山动森】蜜雪儿家的一点小发现 天使or恶魔？" data-category="柯哀分析文">
@@ -569,7 +990,11 @@
                 <span class="article-title">柯哀分析文--【青山动森】蜜雪儿家的一点小发现 天使or恶魔？</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【水】关于世纪之吻隐喻犹大之吻的假说，我们一起看看犹大的人设" data-category="柯哀分析文">
@@ -579,7 +1004,11 @@
                 <span class="article-title">柯哀分析文--【水】关于世纪之吻隐喻犹大之吻的假说，我们一起看看犹大的人设</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【水帖】关于我耗时半个月从0补到原作新更，我如何看待小兰" data-category="柯哀分析文">
@@ -589,7 +1018,11 @@
                 <span class="article-title">柯哀分析文--【水帖】关于我耗时半个月从0补到原作新更，我如何看待小兰</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【讨论】新志文为什么比柯哀难写" data-category="柯哀分析文">
@@ -599,7 +1032,11 @@
                 <span class="article-title">柯哀分析文--【讨论】新志文为什么比柯哀难写</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【推论】“兰蛇论”" data-category="柯哀分析文">
@@ -609,7 +1046,11 @@
                 <span class="article-title">柯哀分析文--【推论】“兰蛇论”</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【推论】关于毛利兰与工藤新一前往纽约的剧情疑点与前因" data-category="柯哀分析文">
@@ -619,7 +1060,11 @@
                 <span class="article-title">柯哀分析文--【推论】关于毛利兰与工藤新一前往纽约的剧情疑点与前因</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【伪年谱向】青山与动画组的爱恨情仇" data-category="柯哀分析文">
@@ -629,7 +1074,11 @@
                 <span class="article-title">柯哀分析文--【伪年谱向】青山与动画组的爱恨情仇</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【我看一直没有人说这个】恐怖的爱" data-category="柯哀分析文">
@@ -639,7 +1088,11 @@
                 <span class="article-title">柯哀分析文--【我看一直没有人说这个】恐怖的爱</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【新发现】“6”是锁定、锁死——直球定输赢呼啸的希望号想到的" data-category="柯哀分析文">
@@ -649,7 +1102,11 @@
                 <span class="article-title">柯哀分析文--【新发现】“6”是锁定、锁死——直球定输赢呼啸的希望号想到的</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【意向整理】浅论柯南中的黄昏以及青山可能存在的表达习惯" data-category="柯哀分析文">
@@ -659,7 +1116,11 @@
                 <span class="article-title">柯哀分析文--【意向整理】浅论柯南中的黄昏以及青山可能存在的表达习惯</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【有端联想】青山眼中的心动瞬间" data-category="柯哀分析文">
@@ -669,7 +1130,11 @@
                 <span class="article-title">柯哀分析文--【有端联想】青山眼中的心动瞬间</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【娱乐向】朗明对接论+宫野夫妇版A药解读" data-category="柯哀分析文">
@@ -679,7 +1144,11 @@
                 <span class="article-title">柯哀分析文--【娱乐向】朗明对接论+宫野夫妇版A药解读</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【预测】平和告白的转折点是新兰分手" data-category="柯哀分析文">
@@ -689,7 +1158,11 @@
                 <span class="article-title">柯哀分析文--【预测】平和告白的转折点是新兰分手</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【欲盖弥彰】粗浅地收集了一下小哀对新兰关系的评价或调侃" data-category="柯哀分析文">
@@ -699,7 +1172,11 @@
                 <span class="article-title">柯哀分析文--【欲盖弥彰】粗浅地收集了一下小哀对新兰关系的评价或调侃</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【杂谈】关于柯南漫画扉页大图的一些梳理" data-category="柯哀分析文">
@@ -709,7 +1186,11 @@
                 <span class="article-title">柯哀分析文--【杂谈】关于柯南漫画扉页大图的一些梳理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【再复盘】危命篇背后的红黑博弈与情感脉络" data-category="柯哀分析文">
@@ -719,7 +1200,11 @@
                 <span class="article-title">柯哀分析文--【再复盘】危命篇背后的红黑博弈与情感脉络</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【折叠的时刻•陆】手机篇柯哀的峰回路转" data-category="柯哀分析文">
@@ -729,7 +1214,11 @@
                 <span class="article-title">柯哀分析文--【折叠的时刻•陆】手机篇柯哀的峰回路转</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【折叠的时空•捌】转折还是盖棺定论？死罗神前后的新兰与柯哀" data-category="柯哀分析文">
@@ -739,7 +1228,11 @@
                 <span class="article-title">柯哀分析文--【折叠的时空•捌】转折还是盖棺定论？死罗神前后的新兰与柯哀</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【折叠的时空•贰】哀与兰的交错对决：从转学生到危命复活" data-category="柯哀分析文">
@@ -749,7 +1242,11 @@
                 <span class="article-title">柯哀分析文--【折叠的时空•贰】哀与兰的交错对决：从转学生到危命复活</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【折叠的时空•零】基于小时间线分析哀登场前的新兰感情变化趋势" data-category="柯哀分析文">
@@ -759,7 +1256,11 @@
                 <span class="article-title">柯哀分析文--【折叠的时空•零】基于小时间线分析哀登场前的新兰感情变化趋势</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【折叠的时空•伦敦特辑】竟然还能挖出新东西？" data-category="柯哀分析文">
@@ -769,7 +1270,11 @@
                 <span class="article-title">柯哀分析文--【折叠的时空•伦敦特辑】竟然还能挖出新东西？</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【折叠的时空•柒】青山的婚姻，瑛佑的告白，柯哀的寤寐思服" data-category="柯哀分析文">
@@ -779,7 +1284,11 @@
                 <span class="article-title">柯哀分析文--【折叠的时空•柒】青山的婚姻，瑛佑的告白，柯哀的寤寐思服</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【折叠的时空•肆】你没看过的纽约篇新解！" data-category="柯哀分析文">
@@ -789,7 +1298,11 @@
                 <span class="article-title">柯哀分析文--【折叠的时空•肆】你没看过的纽约篇新解！</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【总结与暗示】详细分析漫画第54卷中青山留下的线索" data-category="柯哀分析文">
@@ -799,7 +1312,11 @@
                 <span class="article-title">柯哀分析文--【总结与暗示】详细分析漫画第54卷中青山留下的线索</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【m26服装篇】海是心的镜子" data-category="柯哀分析文">
@@ -809,7 +1326,11 @@
                 <span class="article-title">柯哀分析文--【m26服装篇】海是心的镜子</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【Satan论】关于第666话的天使梗" data-category="柯哀分析文">
@@ -819,7 +1340,11 @@
                 <span class="article-title">柯哀分析文--【Satan论】关于第666话的天使梗</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--【Satan论】关于水族馆事件 “魟鱼”的比喻 动画组是不是忘删" data-category="柯哀分析文">
@@ -829,7 +1354,11 @@
                 <span class="article-title">柯哀分析文--【Satan论】关于水族馆事件 “魟鱼”的比喻 动画组是不是忘删</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--12月更新的名柯大事件整理" data-category="柯哀分析文">
@@ -839,7 +1368,11 @@
                 <span class="article-title">柯哀分析文--12月更新的名柯大事件整理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--73 的对比与讽刺究竟从多久前就开始了" data-category="柯哀分析文">
@@ -849,7 +1382,11 @@
                 <span class="article-title">柯哀分析文--73 的对比与讽刺究竟从多久前就开始了</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--73对《秘密》的选择来自其对禁忌感和微妙感的情感青睐" data-category="柯哀分析文">
@@ -859,7 +1396,11 @@
                 <span class="article-title">柯哀分析文--73对《秘密》的选择来自其对禁忌感和微妙感的情感青睐</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--666话与水族馆篇的奇妙“巧合”" data-category="柯哀分析文">
@@ -869,7 +1410,11 @@
                 <span class="article-title">柯哀分析文--666话与水族馆篇的奇妙“巧合”</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--1128话  柯子你讨要补偿也不忘给老婆孩子带是吧！" data-category="柯哀分析文">
@@ -879,7 +1424,11 @@
                 <span class="article-title">柯哀分析文--1128话  柯子你讨要补偿也不忘给老婆孩子带是吧！</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--1130篇章剧情依旧是“双重角色”“双重舞台”!" data-category="柯哀分析文">
@@ -889,7 +1438,11 @@
                 <span class="article-title">柯哀分析文--1130篇章剧情依旧是“双重角色”“双重舞台”!</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--百鸟归林。青山刚昌为了柯哀这醋包的一坨饺子。" data-category="柯哀分析文">
@@ -899,7 +1452,11 @@
                 <span class="article-title">柯哀分析文--百鸟归林。青山刚昌为了柯哀这醋包的一坨饺子。</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--暴论！新志初遇论小哀做了伪装" data-category="柯哀分析文">
@@ -909,7 +1466,11 @@
                 <span class="article-title">柯哀分析文--暴论！新志初遇论小哀做了伪装</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--北斗星篇给读者的启示讨论" data-category="柯哀分析文">
@@ -919,7 +1480,11 @@
                 <span class="article-title">柯哀分析文--北斗星篇给读者的启示讨论</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--贝尔摩德真的偏爱柯南吗？真的在乎小兰吗？" data-category="柯哀分析文">
@@ -929,7 +1494,11 @@
                 <span class="article-title">柯哀分析文--贝尔摩德真的偏爱柯南吗？真的在乎小兰吗？</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--贝新论证据：双眼皮褶皱的超详细梳理" data-category="柯哀分析文">
@@ -939,7 +1508,11 @@
                 <span class="article-title">柯哀分析文--贝新论证据：双眼皮褶皱的超详细梳理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--比护篇里的柯哀全分析：吃比护醋的小柯同学" data-category="柯哀分析文">
@@ -949,7 +1522,11 @@
                 <span class="article-title">柯哀分析文--比护篇里的柯哀全分析：吃比护醋的小柯同学</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--驳_恐怖的爱_兼谈玛利亚篇本身及其他若干问题" data-category="柯哀分析文">
@@ -959,7 +1536,11 @@
                 <span class="article-title">柯哀分析文--驳_恐怖的爱_兼谈玛利亚篇本身及其他若干问题</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--充满好人的坏世界——深究同人主义的失败与不足" data-category="柯哀分析文">
@@ -969,7 +1550,11 @@
                 <span class="article-title">柯哀分析文--充满好人的坏世界——深究同人主义的失败与不足</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--出轨科学家？追星狂？对你哀强行降智的最乐观猜测" data-category="柯哀分析文">
@@ -979,7 +1564,11 @@
                 <span class="article-title">柯哀分析文--出轨科学家？追星狂？对你哀强行降智的最乐观猜测</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--初遇论分析之柯哀关于北海道重叠的记忆" data-category="柯哀分析文">
@@ -989,7 +1578,11 @@
                 <span class="article-title">柯哀分析文--初遇论分析之柯哀关于北海道重叠的记忆</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--初遇论伏笔之单眼佐藤" data-category="柯哀分析文">
@@ -999,7 +1592,11 @@
                 <span class="article-title">柯哀分析文--初遇论伏笔之单眼佐藤</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从4869到1_2，关于隐藏在数字之下真相。" data-category="柯哀分析文">
@@ -1009,7 +1606,11 @@
                 <span class="article-title">柯哀分析文--从4869到1_2，关于隐藏在数字之下真相。</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从创作角度浅谈M26柯哀表现之于全篇的意义2" data-category="柯哀分析文">
@@ -1019,7 +1620,11 @@
                 <span class="article-title">柯哀分析文--从创作角度浅谈M26柯哀表现之于全篇的意义2</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从其他 CP 的角度重新认识柯哀" data-category="柯哀分析文">
@@ -1029,7 +1634,11 @@
                 <span class="article-title">柯哀分析文--从其他 CP 的角度重新认识柯哀</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从青山以往作品谈老贼真正喜爱的故事" data-category="柯哀分析文">
@@ -1039,7 +1648,11 @@
                 <span class="article-title">柯哀分析文--从青山以往作品谈老贼真正喜爱的故事</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从特摄的角度来看关于“黑羽乌丸同源论”好像还真有一个伏笔" data-category="柯哀分析文">
@@ -1049,7 +1662,11 @@
                 <span class="article-title">柯哀分析文--从特摄的角度来看关于“黑羽乌丸同源论”好像还真有一个伏笔</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从西方人类起源神话看柯哀（2） 你本是尘土，仍要归于尘土" data-category="柯哀分析文">
@@ -1059,7 +1676,11 @@
                 <span class="article-title">柯哀分析文--从西方人类起源神话看柯哀（2） 你本是尘土，仍要归于尘土</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从一个创作者的角度分析，哀才是作者属意的官配" data-category="柯哀分析文">
@@ -1069,7 +1690,11 @@
                 <span class="article-title">柯哀分析文--从一个创作者的角度分析，哀才是作者属意的官配</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从长野组用典的准确性看青山刚昌创作思路的变化" data-category="柯哀分析文">
@@ -1079,7 +1704,11 @@
                 <span class="article-title">柯哀分析文--从长野组用典的准确性看青山刚昌创作思路的变化</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从aptx4869名字本身出发不知道是不是个柯哀糖点" data-category="柯哀分析文">
@@ -1089,7 +1718,11 @@
                 <span class="article-title">柯哀分析文--从aptx4869名字本身出发不知道是不是个柯哀糖点</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--从m26和列车篇看赤新联盟最初的三颗银弹布局" data-category="柯哀分析文">
@@ -1099,7 +1732,11 @@
                 <span class="article-title">柯哀分析文--从m26和列车篇看赤新联盟最初的三颗银弹布局</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--对伦敦金苹果理论的一点补充" data-category="柯哀分析文">
@@ -1109,7 +1746,11 @@
                 <span class="article-title">柯哀分析文--对伦敦金苹果理论的一点补充</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--对伦敦篇最初设想的勘误" data-category="柯哀分析文">
@@ -1119,7 +1760,11 @@
                 <span class="article-title">柯哀分析文--对伦敦篇最初设想的勘误</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--分析当中存在的一些误区" data-category="柯哀分析文">
@@ -1129,7 +1774,11 @@
                 <span class="article-title">柯哀分析文--分析当中存在的一些误区</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--分析文的一种常见误区？" data-category="柯哀分析文">
@@ -1139,7 +1788,11 @@
                 <span class="article-title">柯哀分析文--分析文的一种常见误区？</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--分享一些有趣的场外信息，青山老家鸟取县见闻有感" data-category="柯哀分析文">
@@ -1149,7 +1802,11 @@
                 <span class="article-title">柯哀分析文--分享一些有趣的场外信息，青山老家鸟取县见闻有感</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--歌牌新脑洞" data-category="柯哀分析文">
@@ -1159,7 +1816,11 @@
                 <span class="article-title">柯哀分析文--歌牌新脑洞</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--个人观感向：漫画中那些令人细思极恐的细节【18-43卷】" data-category="柯哀分析文">
@@ -1169,7 +1830,11 @@
                 <span class="article-title">柯哀分析文--个人观感向：漫画中那些令人细思极恐的细节【18-43卷】</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--宫野志保——星之继承者" data-category="柯哀分析文">
@@ -1179,7 +1844,11 @@
                 <span class="article-title">柯哀分析文--宫野志保——星之继承者</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于“哀的道德感很高”，以及她为什么不插手新兰感情。" data-category="柯哀分析文">
@@ -1189,7 +1858,11 @@
                 <span class="article-title">柯哀分析文--关于“哀的道德感很高”，以及她为什么不插手新兰感情。</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于84岁这个梗到底有什么意思在里面呢，还是当一个乐子来看" data-category="柯哀分析文">
@@ -1199,7 +1872,11 @@
                 <span class="article-title">柯哀分析文--关于84岁这个梗到底有什么意思在里面呢，还是当一个乐子来看</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于哀的“出轨研究专家”头衔的个人见解" data-category="柯哀分析文">
@@ -1209,7 +1886,11 @@
                 <span class="article-title">柯哀分析文--关于哀的“出轨研究专家”头衔的个人见解</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于工藤新一和银发杀人魔撞衫这件小事" data-category="柯哀分析文">
@@ -1219,7 +1900,11 @@
                 <span class="article-title">柯哀分析文--关于工藤新一和银发杀人魔撞衫这件小事</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于伦敦篇中大本钟时间的对照关系" data-category="柯哀分析文">
@@ -1229,7 +1914,11 @@
                 <span class="article-title">柯哀分析文--关于伦敦篇中大本钟时间的对照关系</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于漫画里的占卜抽签" data-category="柯哀分析文">
@@ -1239,7 +1928,11 @@
                 <span class="article-title">柯哀分析文--关于漫画里的占卜抽签</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于名侦探柯南里那些事件的作案动机" data-category="柯哀分析文">
@@ -1249,7 +1942,11 @@
                 <span class="article-title">柯哀分析文--关于名侦探柯南里那些事件的作案动机</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于纽约篇贝魔论的一些补充" data-category="柯哀分析文">
@@ -1259,7 +1956,11 @@
                 <span class="article-title">柯哀分析文--关于纽约篇贝魔论的一些补充</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于纽约篇贝新论更深层意义的脑洞" data-category="柯哀分析文">
@@ -1269,7 +1970,11 @@
                 <span class="article-title">柯哀分析文--关于纽约篇贝新论更深层意义的脑洞</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于日版漫画前情提要中对小兰的称呼问题的演变" data-category="柯哀分析文">
@@ -1279,7 +1984,11 @@
                 <span class="article-title">柯哀分析文--关于日版漫画前情提要中对小兰的称呼问题的演变</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于小哀的仇恨" data-category="柯哀分析文">
@@ -1289,7 +1998,11 @@
                 <span class="article-title">柯哀分析文--关于小哀的仇恨</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于小兰发型的变化以及角的出现的一些猜测和分析" data-category="柯哀分析文">
@@ -1299,7 +2012,11 @@
                 <span class="article-title">柯哀分析文--关于小兰发型的变化以及角的出现的一些猜测和分析</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于小兰是撒旦（恶魔，堕天使）的又一补充" data-category="柯哀分析文">
@@ -1309,7 +2026,11 @@
                 <span class="article-title">柯哀分析文--关于小兰是撒旦（恶魔，堕天使）的又一补充</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--关于樱花班，错位论" data-category="柯哀分析文">
@@ -1319,7 +2040,11 @@
                 <span class="article-title">柯哀分析文--关于樱花班，错位论</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--红修篇— —受九九玉生烟大大启发发现的几个要点" data-category="柯哀分析文">
@@ -1329,7 +2054,11 @@
                 <span class="article-title">柯哀分析文--红修篇— —受九九玉生烟大大启发发现的几个要点</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--回忆的错位" data-category="柯哀分析文">
@@ -1339,7 +2068,11 @@
                 <span class="article-title">柯哀分析文--回忆的错位</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--结合南英大佬的伦敦篇默示录分析，这张图该怎样理解？" data-category="柯哀分析文">
@@ -1349,7 +2082,11 @@
                 <span class="article-title">柯哀分析文--结合南英大佬的伦敦篇默示录分析，这张图该怎样理解？</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--看完麦子的视频后，聊聊水厂的命名" data-category="柯哀分析文">
@@ -1359,7 +2096,11 @@
                 <span class="article-title">柯哀分析文--看完麦子的视频后，聊聊水厂的命名</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--柯南早期的孤独感" data-category="柯哀分析文">
@@ -1369,7 +2110,11 @@
                 <span class="article-title">柯哀分析文--柯南早期的孤独感</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--可能可以侧面佐证初遇论确实存在的一点猜想" data-category="柯哀分析文">
@@ -1379,7 +2124,11 @@
                 <span class="article-title">柯哀分析文--可能可以侧面佐证初遇论确实存在的一点猜想</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--老粉拜吧-关于73动物之森里信息的分析" data-category="柯哀分析文">
@@ -1389,7 +2138,11 @@
                 <span class="article-title">柯哀分析文--老粉拜吧-关于73动物之森里信息的分析</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--聊聊名柯中的足球德比" data-category="柯哀分析文">
@@ -1399,7 +2152,11 @@
                 <span class="article-title">柯哀分析文--聊聊名柯中的足球德比</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--列车篇后秀柯哀的关系变化——浅谈若哀关系梳理" data-category="柯哀分析文">
@@ -1409,7 +2166,11 @@
                 <span class="article-title">柯哀分析文--列车篇后秀柯哀的关系变化——浅谈若哀关系梳理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--伦敦篇后新兰和柯哀关系的发展梳理" data-category="柯哀分析文">
@@ -1419,7 +2180,11 @@
                 <span class="article-title">柯哀分析文--伦敦篇后新兰和柯哀关系的发展梳理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--伦敦篇新发现" data-category="柯哀分析文">
@@ -1429,7 +2194,11 @@
                 <span class="article-title">柯哀分析文--伦敦篇新发现</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--伦敦篇新解、命定之人、黑白君及其他" data-category="柯哀分析文">
@@ -1439,7 +2208,11 @@
                 <span class="article-title">柯哀分析文--伦敦篇新解、命定之人、黑白君及其他</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--伦敦篇再析：标题也是需要解读的暗号" data-category="柯哀分析文">
@@ -1449,7 +2222,11 @@
                 <span class="article-title">柯哀分析文--伦敦篇再析：标题也是需要解读的暗号</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--漫画里的哀的表情一直都很丰富呀" data-category="柯哀分析文">
@@ -1459,7 +2236,11 @@
                 <span class="article-title">柯哀分析文--漫画里的哀的表情一直都很丰富呀</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--每个柯哀党都无法忘却的一年——2023柯哀新兰战争回忆录。" data-category="柯哀分析文">
@@ -1469,7 +2250,11 @@
                 <span class="article-title">柯哀分析文--每个柯哀党都无法忘却的一年——2023柯哀新兰战争回忆录。</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--名柯第1131话，平和“帽子梗”" data-category="柯哀分析文">
@@ -1479,7 +2264,11 @@
                 <span class="article-title">柯哀分析文--名柯第1131话，平和“帽子梗”</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--名柯时间线个人向整理" data-category="柯哀分析文">
@@ -1489,7 +2278,11 @@
                 <span class="article-title">柯哀分析文--名柯时间线个人向整理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--名科主要角色称呼考" data-category="柯哀分析文">
@@ -1499,7 +2292,11 @@
                 <span class="article-title">柯哀分析文--名科主要角色称呼考</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--年轻时的青山和编辑的冲突" data-category="柯哀分析文">
@@ -1509,7 +2306,11 @@
                 <span class="article-title">柯哀分析文--年轻时的青山和编辑的冲突</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--纽约篇和伦敦篇里的金苹果神话" data-category="柯哀分析文">
@@ -1519,7 +2320,11 @@
                 <span class="article-title">柯哀分析文--纽约篇和伦敦篇里的金苹果神话</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--平和真的要成了，但是………" data-category="柯哀分析文">
@@ -1529,7 +2334,11 @@
                 <span class="article-title">柯哀分析文--平和真的要成了，但是………</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--破事氵，颜色梗（青•蓝•哀=红）" data-category="柯哀分析文">
@@ -1539,7 +2348,11 @@
                 <span class="article-title">柯哀分析文--破事氵，颜色梗（青•蓝•哀=红）</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--浅谈，从m26解读到的新志初遇论" data-category="柯哀分析文">
@@ -1549,7 +2362,11 @@
                 <span class="article-title">柯哀分析文--浅谈，从m26解读到的新志初遇论</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--青山动森 小哀和博士的小灯砖不见了" data-category="柯哀分析文">
@@ -1559,7 +2376,11 @@
                 <span class="article-title">柯哀分析文--青山动森 小哀和博士的小灯砖不见了</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--青山證實哀已經回收MO了" data-category="柯哀分析文">
@@ -1569,7 +2390,11 @@
                 <span class="article-title">柯哀分析文--青山證實哀已經回收MO了</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--上帝在看着——就黑羽乌丸同源论与圣经延伸出的暴论" data-category="柯哀分析文">
@@ -1579,7 +2404,11 @@
                 <span class="article-title">柯哀分析文--上帝在看着——就黑羽乌丸同源论与圣经延伸出的暴论</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--圣诞哀与漫画的互动" data-category="柯哀分析文">
@@ -1589,7 +2418,11 @@
                 <span class="article-title">柯哀分析文--圣诞哀与漫画的互动</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--刷到了一个没见过的观点" data-category="柯哀分析文">
@@ -1599,7 +2432,11 @@
                 <span class="article-title">柯哀分析文--刷到了一个没见过的观点</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--随笔，关于1128话……" data-category="柯哀分析文">
@@ -1609,7 +2446,11 @@
                 <span class="article-title">柯哀分析文--随笔，关于1128话……</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--我一定会想办法，但明目张胆地偏爱" data-category="柯哀分析文">
@@ -1619,7 +2460,11 @@
                 <span class="article-title">柯哀分析文--我一定会想办法，但明目张胆地偏爱</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--乌丸和黑羽是兄弟" data-category="柯哀分析文">
@@ -1629,7 +2474,11 @@
                 <span class="article-title">柯哀分析文--乌丸和黑羽是兄弟</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--细看1-5柯南全脸红，并分析其内核" data-category="柯哀分析文">
@@ -1639,7 +2488,11 @@
                 <span class="article-title">柯哀分析文--细看1-5柯南全脸红，并分析其内核</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--闲聊暴论，柯南从修学旅行开始的七宗罪修行。" data-category="柯哀分析文">
@@ -1649,7 +2502,11 @@
                 <span class="article-title">柯哀分析文--闲聊暴论，柯南从修学旅行开始的七宗罪修行。</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--详论如何从完整漫画第66卷与红修篇、樱花篇的对应关系得柯哀推论" data-category="柯哀分析文">
@@ -1659,7 +2516,11 @@
                 <span class="article-title">柯哀分析文--详论如何从完整漫画第66卷与红修篇、樱花篇的对应关系得柯哀推论</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--小哀鲨鱼海豚论心理分析" data-category="柯哀分析文">
@@ -1669,7 +2530,11 @@
                 <span class="article-title">柯哀分析文--小哀鲨鱼海豚论心理分析</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--小五郎为什么就那么不待见新一" data-category="柯哀分析文">
@@ -1679,7 +2544,11 @@
                 <span class="article-title">柯哀分析文--小五郎为什么就那么不待见新一</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--新的视角，新的暴论：哀的身体与柯的犹疑" data-category="柯哀分析文">
@@ -1689,7 +2558,11 @@
                 <span class="article-title">柯哀分析文--新的视角，新的暴论：哀的身体与柯的犹疑</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--新兰背后是柯哀——从“青山刚昌的名侦探图鉴”看作者的暗示！" data-category="柯哀分析文">
@@ -1699,7 +2572,11 @@
                 <span class="article-title">柯哀分析文--新兰背后是柯哀——从“青山刚昌的名侦探图鉴”看作者的暗示！</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--新兰の恋爱推理" data-category="柯哀分析文">
@@ -1709,7 +2586,11 @@
                 <span class="article-title">柯哀分析文--新兰の恋爱推理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--寻找玛利亚的第71、72卷【箭】指的伦敦篇" data-category="柯哀分析文">
@@ -1719,7 +2600,11 @@
                 <span class="article-title">柯哀分析文--寻找玛利亚的第71、72卷【箭】指的伦敦篇</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--寻找玛利亚篇——灰原故事线的缩影" data-category="柯哀分析文">
@@ -1729,7 +2614,11 @@
                 <span class="article-title">柯哀分析文--寻找玛利亚篇——灰原故事线的缩影</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--寻找玛利亚是青山对新一感情线的一次总结和感情归宿的暗示" data-category="柯哀分析文">
@@ -1739,7 +2628,11 @@
                 <span class="article-title">柯哀分析文--寻找玛利亚是青山对新一感情线的一次总结和感情归宿的暗示</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--一起逐页讨论1129话 朱砂色的开演" data-category="柯哀分析文">
@@ -1749,7 +2642,11 @@
                 <span class="article-title">柯哀分析文--一起逐页讨论1129话 朱砂色的开演</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--樱花班故事中“错位论”的推理" data-category="柯哀分析文">
@@ -1759,7 +2656,11 @@
                 <span class="article-title">柯哀分析文--樱花班故事中“错位论”的推理</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--樱花班细节" data-category="柯哀分析文">
@@ -1769,7 +2670,11 @@
                 <span class="article-title">柯哀分析文--樱花班细节</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--樱花和雪花——读者视角的错位" data-category="柯哀分析文">
@@ -1779,7 +2684,11 @@
                 <span class="article-title">柯哀分析文--樱花和雪花——读者视角的错位</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--有关于二分之一论发散的想法和拙见" data-category="柯哀分析文">
@@ -1789,7 +2698,11 @@
                 <span class="article-title">柯哀分析文--有关于二分之一论发散的想法和拙见</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--预言新志初遇中帽子要素的出现（基于千苗和银杏初恋两对cp）" data-category="柯哀分析文">
@@ -1799,7 +2712,11 @@
                 <span class="article-title">柯哀分析文--预言新志初遇中帽子要素的出现（基于千苗和银杏初恋两对cp）</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--元旦新证据：灰原哀与「兔」意象" data-category="柯哀分析文">
@@ -1809,7 +2726,11 @@
                 <span class="article-title">柯哀分析文--元旦新证据：灰原哀与「兔」意象</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--越不起眼事越大，关于兰和新一聊案子的违和感" data-category="柯哀分析文">
@@ -1819,7 +2740,11 @@
                 <span class="article-title">柯哀分析文--越不起眼事越大，关于兰和新一聊案子的违和感</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--在进行一次新的抛砖引玉，是关于m26八丈岛" data-category="柯哀分析文">
@@ -1829,7 +2754,11 @@
                 <span class="article-title">柯哀分析文--在进行一次新的抛砖引玉，是关于m26八丈岛</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--在柯南视角，「不认输」是喜欢的意思，那是不是说明他对小哀……" data-category="柯哀分析文">
@@ -1839,7 +2768,11 @@
                 <span class="article-title">柯哀分析文--在柯南视角，「不认输」是喜欢的意思，那是不是说明他对小哀……</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--站位中的学问" data-category="柯哀分析文">
@@ -1849,7 +2782,11 @@
                 <span class="article-title">柯哀分析文--站位中的学问</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--长篇分析，从《李尔王》分析江户川和灰原两个姓氏的对称性" data-category="柯哀分析文">
@@ -1859,7 +2796,11 @@
                 <span class="article-title">柯哀分析文--长篇分析，从《李尔王》分析江户川和灰原两个姓氏的对称性</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--这种明显的障眼法是青山刚昌常用的套路" data-category="柯哀分析文">
@@ -1869,7 +2810,11 @@
                 <span class="article-title">柯哀分析文--这种明显的障眼法是青山刚昌常用的套路</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--针对某些贷款1144话现象想泼盆冷水" data-category="柯哀分析文">
@@ -1879,7 +2824,11 @@
                 <span class="article-title">柯哀分析文--针对某些贷款1144话现象想泼盆冷水</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--整理以及探讨一下三位银弹的设计思路" data-category="柯哀分析文">
@@ -1889,7 +2838,11 @@
                 <span class="article-title">柯哀分析文--整理以及探讨一下三位银弹的设计思路</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--重看漫画，发现关于贝新论的一个小细节" data-category="柯哀分析文">
@@ -1899,7 +2852,11 @@
                 <span class="article-title">柯哀分析文--重看漫画，发现关于贝新论的一个小细节</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--重温手机篇发现小兰竟然喜欢青山的对家？" data-category="柯哀分析文">
@@ -1909,7 +2866,11 @@
                 <span class="article-title">柯哀分析文--重温手机篇发现小兰竟然喜欢青山的对家？</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--最新2️⃣则案件的细节考察及推理（漫画1126-1129话）" data-category="柯哀分析文">
@@ -1919,7 +2880,11 @@
                 <span class="article-title">柯哀分析文--最新2️⃣则案件的细节考察及推理（漫画1126-1129话）</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--昨晚的粉红纸条让我突然磕到的一点" data-category="柯哀分析文">
@@ -1929,7 +2894,11 @@
                 <span class="article-title">柯哀分析文--昨晚的粉红纸条让我突然磕到的一点</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--M26宾加之死——酒厂内讧和琴酒私欲的展现" data-category="柯哀分析文">
@@ -1939,7 +2908,11 @@
                 <span class="article-title">柯哀分析文--M26宾加之死——酒厂内讧和琴酒私欲的展现</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--m26的细节，阿笠博士车牌号是“新一锁定志保”的谐音" data-category="柯哀分析文">
@@ -1949,7 +2922,11 @@
                 <span class="article-title">柯哀分析文--m26的细节，阿笠博士车牌号是“新一锁定志保”的谐音</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文--M26之后，毛利兰有情敌吗？——柯哀、新兰未来感情散谈" data-category="柯哀分析文">
@@ -1959,7 +2936,11 @@
                 <span class="article-title">柯哀分析文--M26之后，毛利兰有情敌吗？——柯哀、新兰未来感情散谈</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文-【折叠的时空•壹】全日常案件的角色贡献分数" data-category="柯哀分析文">
@@ -1969,7 +2950,11 @@
                 <span class="article-title">柯哀分析文-【折叠的时空•壹】全日常案件的角色贡献分数</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯哀分析文-你真的看懂了名柯1149话——《女生聚会疑案》了吗？" data-category="柯哀分析文">
@@ -1979,7 +2964,11 @@
                 <span class="article-title">柯哀分析文-你真的看懂了名柯1149话——《女生聚会疑案》了吗？</span>
                 <span class="article-meta">柯哀分析文</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--【讨论与吐槽】朗姆的眼睛算是具有超能力吗？" data-category="柯南">
@@ -1989,7 +2978,11 @@
                 <span class="article-title">柯南--【讨论与吐槽】朗姆的眼睛算是具有超能力吗？</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--柯南对着主要女角色之外的女性脸红 合集" data-category="柯南">
@@ -1999,7 +2992,11 @@
                 <span class="article-title">柯南--柯南对着主要女角色之外的女性脸红 合集</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--漫画中黑框的整理和初步探究" data-category="柯南">
@@ -2009,7 +3006,11 @@
                 <span class="article-title">柯南--漫画中黑框的整理和初步探究</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--你们觉得柯南衣服上经常出现的“K”字母可能代表哪些含义？" data-category="柯南">
@@ -2019,7 +3020,11 @@
                 <span class="article-title">柯南--你们觉得柯南衣服上经常出现的“K”字母可能代表哪些含义？</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--其实斗子的演技一直挺好分的" data-category="柯南">
@@ -2029,7 +3034,11 @@
                 <span class="article-title">柯南--其实斗子的演技一直挺好分的</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--收集一些作画失误（？）" data-category="柯南">
@@ -2039,7 +3048,11 @@
                 <span class="article-title">柯南--收集一些作画失误（？）</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--所以此时台上台下三人的视角是" data-category="柯南">
@@ -2049,7 +3062,11 @@
                 <span class="article-title">柯南--所以此时台上台下三人的视角是</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--这一次的门开得也太离谱了" data-category="柯南">
@@ -2059,7 +3076,11 @@
                 <span class="article-title">柯南--这一次的门开得也太离谱了</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="柯南--A药和解药的颜色变化史" data-category="柯南">
@@ -2069,7 +3090,11 @@
                 <span class="article-title">柯南--A药和解药的颜色变化史</span>
                 <span class="article-meta">柯南</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="米花学园--【多视角再解读】女王之谋——棋盘篇狙击的障眼法以及若干隐喻" data-category="米花学园">
@@ -2079,7 +3104,11 @@
                 <span class="article-title">米花学园--【多视角再解读】女王之谋——棋盘篇狙击的障眼法以及若干隐喻</span>
                 <span class="article-meta">米花学园</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="米花学园--【一些猜测】从A药出发看组织内斗与红方内斗" data-category="米花学园">
@@ -2089,7 +3118,11 @@
                 <span class="article-title">米花学园--【一些猜测】从A药出发看组织内斗与红方内斗</span>
                 <span class="article-meta">米花学园</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
           <li class="article-card" data-title="米花学园--有大问题 蕾切尔浅香好像不是真名" data-category="米花学园">
@@ -2099,7 +3132,11 @@
                 <span class="article-title">米花学园--有大问题 蕾切尔浅香好像不是真名</span>
                 <span class="article-meta">米花学园</span>
               </span>
-              <span class="article-arrow" aria-hidden="true">›</span>
+              <span class="article-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           </li>
       </ul>
@@ -2108,23 +3145,53 @@
   </main>
 
   <footer class="site-footer">
-    联系方式：<a href="mailto:tomiyasu@duck.com">tomiyasu@duck.com</a>
+    <span>联系方式：<a href="mailto:tomiyasu@duck.com">tomiyasu@duck.com</a></span>
+    <span class="footer-separator" aria-hidden="true"> · </span>
+    <span>Powered by <a href="https://loli.ie" target="_blank" rel="noopener">loli.ie</a></span>
   </footer>
 
   <script>
     (() => {
+      const root = document.documentElement;
       const searchInput = document.getElementById('searchInput');
       const resultCount = document.getElementById('resultCount');
       const emptyState = document.getElementById('emptyState');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeLabel = document.getElementById('themeLabel');
+      const densityButtons = Array.from(document.querySelectorAll('.density-button'));
       const filterButtons = Array.from(document.querySelectorAll('.filter-button'));
       const items = Array.from(document.querySelectorAll('.article-card')).map(item => ({
         node: item,
-        title: item.dataset.title.toLowerCase(),
         category: item.dataset.category,
         searchable: `${item.dataset.title} ${item.dataset.category}`.toLowerCase(),
       }));
 
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
       let activeCategory = 'all';
+
+      function currentTheme() {
+        return root.dataset.theme || (systemDark.matches ? 'dark' : 'light');
+      }
+
+      function syncThemeButton() {
+        const isDark = currentTheme() === 'dark';
+        themeLabel.textContent = isDark ? '浅色' : '深色';
+        themeToggle.setAttribute('aria-pressed', String(isDark));
+      }
+
+      function setTheme(theme) {
+        root.dataset.theme = theme;
+        localStorage.setItem('coaibackup-theme', theme);
+        syncThemeButton();
+      }
+
+      function setDensity(density) {
+        root.dataset.density = density === 'compact' ? 'compact' : 'comfortable';
+        localStorage.setItem('coaibackup-density', root.dataset.density);
+        for (const button of densityButtons) {
+          button.classList.toggle('is-active', button.dataset.density === root.dataset.density);
+        }
+      }
 
       function updateList() {
         const query = searchInput.value.trim().toLowerCase();
@@ -2145,7 +3212,21 @@
         emptyState.classList.toggle('is-visible', visibleCount === 0);
       }
 
+      themeToggle.addEventListener('click', () => {
+        setTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+      });
+
+      systemDark.addEventListener('change', () => {
+        if (!root.dataset.theme) {
+          syncThemeButton();
+        }
+      });
+
       searchInput.addEventListener('input', updateList);
+
+      for (const button of densityButtons) {
+        button.addEventListener('click', () => setDensity(button.dataset.density));
+      }
 
       for (const button of filterButtons) {
         button.addEventListener('click', () => {
@@ -2156,6 +3237,9 @@
           updateList();
         });
       }
+
+      setDensity(localStorage.getItem('coaibackup-density') || 'comfortable');
+      syncThemeButton();
     })();
   </script>
 </body>
