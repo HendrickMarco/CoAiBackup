@@ -87,6 +87,29 @@ function buildCategoryFilters(articles) {
   return buttons.join('\n          ');
 }
 
+function getCategoryCounts(articles) {
+  const counts = new Map();
+
+  for (const article of articles) {
+    counts.set(article.category, (counts.get(article.category) || 0) + 1);
+  }
+
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-Hans-CN', { numeric: true }));
+}
+
+function buildHeroChips(categoryCounts) {
+  return categoryCounts.slice(0, 4).map(([category, count]) => (
+    `<span class="hero-chip">${escapeHtml(category)} <strong>${count}</strong></span>`
+  )).join('\n              ');
+}
+
+function buildShelfItems(articles) {
+  return articles.slice(0, 5).map((article, index) => (
+    `<span class="shelf-item" style="--i: ${index + 1};">${escapeHtml(article.category)}</span>`
+  )).join('\n              ');
+}
+
 function buildArticleList(articles) {
   return articles.map((article, index) => `
           <li class="article-card" data-title="${escapeHtml(article.title)}" data-category="${escapeHtml(article.category)}">
@@ -107,6 +130,7 @@ function buildArticleList(articles) {
 
 function renderHtml(articles) {
   const categories = new Set(articles.map(article => article.category));
+  const categoryCounts = getCategoryCounts(articles);
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -141,7 +165,12 @@ function renderHtml(articles) {
       --accent-soft: #fff2ef;
       --blue: #225e76;
       --blue-soft: #e9f2f5;
+      --gold: #a35f00;
+      --gold-soft: #fff0d6;
+      --green: #3f6f4f;
+      --green-soft: #e8f3eb;
       --shadow: 0 18px 50px rgba(41, 32, 25, 0.12);
+      --shadow-soft: 0 10px 30px rgba(41, 32, 25, 0.08);
       --toolbar-bg: rgba(246, 243, 239, 0.92);
       --footer-bg: #211f1d;
       --footer-text: #e7dfd6;
@@ -164,7 +193,12 @@ function renderHtml(articles) {
       --accent-soft: #3a211e;
       --blue: #7cc7df;
       --blue-soft: #1d3138;
+      --gold: #ffd18a;
+      --gold-soft: #342817;
+      --green: #a5d6b0;
+      --green-soft: #1d3022;
       --shadow: 0 20px 54px rgba(0, 0, 0, 0.38);
+      --shadow-soft: 0 12px 34px rgba(0, 0, 0, 0.28);
       --toolbar-bg: rgba(20, 19, 18, 0.90);
       --footer-bg: #0f0e0d;
       --footer-text: #d8d0c8;
@@ -188,7 +222,12 @@ function renderHtml(articles) {
         --accent-soft: #3a211e;
         --blue: #7cc7df;
         --blue-soft: #1d3138;
+        --gold: #ffd18a;
+        --gold-soft: #342817;
+        --green: #a5d6b0;
+        --green-soft: #1d3022;
         --shadow: 0 20px 54px rgba(0, 0, 0, 0.38);
+        --shadow-soft: 0 12px 34px rgba(0, 0, 0, 0.28);
         --toolbar-bg: rgba(20, 19, 18, 0.90);
         --footer-bg: #0f0e0d;
         --footer-text: #d8d0c8;
@@ -210,8 +249,9 @@ function renderHtml(articles) {
       display: flex;
       flex-direction: column;
       background:
-        linear-gradient(180deg, rgba(178, 52, 43, 0.10), rgba(34, 94, 118, 0.08) 360px, transparent 680px),
-        radial-gradient(circle at 50% -220px, rgba(255, 255, 255, 0.36), transparent 430px),
+        linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 34rem),
+        linear-gradient(180deg, color-mix(in srgb, var(--blue) 10%, transparent), transparent 42rem),
+        repeating-linear-gradient(90deg, transparent 0 42px, color-mix(in srgb, var(--line) 28%, transparent) 42px 43px),
         var(--bg);
       color: var(--text);
       font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
@@ -230,8 +270,19 @@ function renderHtml(articles) {
     }
 
     .site-header {
-      padding: 28px 20px 26px;
+      position: relative;
+      overflow: hidden;
+      padding: 28px 20px 34px;
       border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+    }
+
+    .site-header::before {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 9px;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--blue), var(--green));
+      opacity: 0.92;
     }
 
     .header-inner,
@@ -299,9 +350,13 @@ function renderHtml(articles) {
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
       gap: 34px;
       align-items: end;
+    }
+
+    .hero-copy {
+      max-width: 760px;
     }
 
     .eyebrow {
@@ -327,9 +382,96 @@ function renderHtml(articles) {
       font-size: 1.02rem;
     }
 
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-raised);
+      color: var(--muted);
+      font-size: 0.88rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-chip strong {
+      margin-left: 6px;
+      color: var(--accent-strong);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      min-height: 286px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, color-mix(in srgb, var(--surface) 94%, transparent), color-mix(in srgb, var(--surface-muted) 88%, transparent)),
+        var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, transparent 0 28%, color-mix(in srgb, var(--accent) 12%, transparent) 28% 44%, transparent 44%),
+        linear-gradient(38deg, transparent 0 48%, color-mix(in srgb, var(--blue) 12%, transparent) 48% 62%, transparent 62%);
+      pointer-events: none;
+    }
+
+    .hero-panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-label {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .archive-shelf {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      align-items: end;
+      min-height: 110px;
+      margin-bottom: 18px;
+    }
+
+    .shelf-item {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      min-height: calc(58px + var(--i) * 7px);
+      padding: 8px 6px;
+      border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+      border-radius: 7px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface));
+      color: var(--accent-strong);
+      font-size: 0.76rem;
+      font-weight: 800;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      box-shadow: 0 10px 22px rgba(41, 32, 25, 0.08);
+    }
+
     .stats {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -339,7 +481,15 @@ function renderHtml(articles) {
       background: var(--surface-raised);
       border: 1px solid var(--line);
       border-radius: 8px;
-      box-shadow: 0 12px 34px rgba(41, 32, 25, 0.06);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat:nth-child(2) .stat-value {
+      color: var(--blue);
+    }
+
+    .stat:nth-child(3) .stat-value {
+      color: var(--green);
     }
 
     .stat-value {
@@ -366,13 +516,23 @@ function renderHtml(articles) {
       position: sticky;
       top: 0;
       z-index: 3;
-      padding: 14px;
-      margin-bottom: 18px;
+      padding: 16px;
+      margin-bottom: 20px;
       background: var(--toolbar-bg);
       border: 1px solid var(--line);
       border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(41, 32, 25, 0.08);
+      box-shadow: var(--shadow-soft);
       backdrop-filter: blur(14px);
+    }
+
+    .toolbar::before {
+      content: "";
+      display: block;
+      height: 3px;
+      margin: -16px -16px 13px;
+      border-radius: 8px 8px 0 0;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--blue));
+      opacity: 0.85;
     }
 
     .search-row {
@@ -400,7 +560,7 @@ function renderHtml(articles) {
 
     #searchInput {
       width: 100%;
-      height: 48px;
+      height: 50px;
       padding: 0 16px 0 44px;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -467,6 +627,7 @@ function renderHtml(articles) {
       border-color: color-mix(in srgb, var(--accent) 44%, var(--line));
       background: var(--accent-soft);
       color: var(--accent-strong);
+      box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--accent) 50%, transparent);
     }
 
     .filter-button span {
@@ -477,13 +638,15 @@ function renderHtml(articles) {
     .article-list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 12px;
+      gap: 14px;
       padding: 0;
       margin: 0;
       list-style: none;
     }
 
     .article-card {
+      position: relative;
+      overflow: hidden;
       min-height: 98px;
       background: var(--surface);
       border: 1px solid var(--line);
@@ -492,10 +655,51 @@ function renderHtml(articles) {
       transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
     }
 
+    .article-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--accent);
+      opacity: 0.78;
+      transition: width 160ms ease, opacity 160ms ease;
+    }
+
+    .article-card:nth-child(4n + 2)::before {
+      background: var(--blue);
+    }
+
+    .article-card:nth-child(4n + 3)::before {
+      background: var(--gold);
+    }
+
+    .article-card:nth-child(4n + 4)::before {
+      background: var(--green);
+    }
+
+    .article-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 42%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease;
+    }
+
     .article-card:hover {
       border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
       box-shadow: var(--shadow);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+    }
+
+    .article-card:hover::before {
+      width: 7px;
+      opacity: 1;
+    }
+
+    .article-card:hover::after {
+      opacity: 1;
     }
 
     .article-card.is-hidden {
@@ -503,16 +707,29 @@ function renderHtml(articles) {
     }
 
     .article-card a {
+      position: relative;
+      z-index: 1;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       gap: 13px;
       align-items: center;
       min-height: 98px;
-      padding: 16px;
+      padding: 16px 16px 16px 18px;
+    }
+
+    .article-card a:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 42%, transparent);
+      outline-offset: -5px;
     }
 
     .article-number {
-      width: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 32px;
+      border-radius: 999px;
+      background: var(--surface-muted);
       color: var(--accent);
       font-size: 0.82rem;
       font-weight: 850;
@@ -556,6 +773,13 @@ function renderHtml(articles) {
       border-radius: 50%;
       background: var(--surface-muted);
       color: var(--blue);
+      transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .article-card:hover .article-arrow {
+      background: var(--blue);
+      color: var(--surface);
+      transform: translateX(2px);
     }
 
     .article-arrow svg {
@@ -652,6 +876,10 @@ function renderHtml(articles) {
         gap: 22px;
       }
 
+      .hero-panel {
+        min-height: 0;
+      }
+
       .stats {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -708,6 +936,10 @@ function renderHtml(articles) {
         padding: 12px;
       }
 
+      .toolbar::before {
+        margin: -12px -12px 11px;
+      }
+
       .search-row {
         grid-template-columns: 1fr;
       }
@@ -726,6 +958,32 @@ function renderHtml(articles) {
 
       .filter-button {
         flex: 0 0 auto;
+      }
+
+      .hero-chips {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 3px;
+        scrollbar-width: thin;
+      }
+
+      .hero-chip {
+        flex: 0 0 auto;
+      }
+
+      .hero-panel {
+        padding: 14px;
+      }
+
+      .archive-shelf {
+        min-height: 74px;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+
+      .shelf-item {
+        min-height: calc(42px + var(--i) * 5px);
+        font-size: 0.7rem;
       }
 
       .site-footer {
@@ -771,6 +1029,16 @@ function renderHtml(articles) {
         display: inline-flex;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -791,23 +1059,32 @@ function renderHtml(articles) {
       </div>
 
       <div class="hero-grid">
-        <div>
+        <div class="hero-copy">
           <p class="eyebrow">柯哀与名柯文章备份</p>
           <h1>文章归档索引</h1>
           <p class="header-copy">稳定保存的本地静态目录，按文章标题和分类快速定位。</p>
+          <div class="hero-chips" aria-label="主要分类">
+              ${buildHeroChips(categoryCounts)}
+          </div>
         </div>
-        <div class="stats" aria-label="站点统计">
-          <div class="stat">
-            <span class="stat-value">${articles.length}</span>
-            <span class="stat-label">篇文章</span>
+        <div class="hero-panel" aria-label="归档概览">
+          <p class="panel-label">Archive Shelf</p>
+          <div class="archive-shelf" aria-hidden="true">
+              ${buildShelfItems(articles)}
           </div>
-          <div class="stat">
-            <span class="stat-value">${categories.size}</span>
-            <span class="stat-label">个分类</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">HTML</span>
-            <span class="stat-label">静态备份</span>
+          <div class="stats" aria-label="站点统计">
+            <div class="stat">
+              <span class="stat-value">${articles.length}</span>
+              <span class="stat-label">篇文章</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">${categories.size}</span>
+              <span class="stat-label">个分类</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">HTML</span>
+              <span class="stat-label">静态备份</span>
+            </div>
           </div>
         </div>
       </div>
