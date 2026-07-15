@@ -120,9 +120,7 @@ function buildArticleList(articles) {
                 <span class="article-meta">${escapeHtml(article.category)}</span>
               </span>
               <span class="article-arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                  <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><use href="#icon-arrow"/></svg>
               </span>
             </a>
           </li>`).join('');
@@ -523,6 +521,8 @@ function renderHtml(articles) {
       border-radius: 8px;
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      contain: layout paint;
     }
 
     .toolbar::before {
@@ -652,7 +652,9 @@ function renderHtml(articles) {
       border: 1px solid var(--line);
       border-radius: 8px;
       box-shadow: 0 8px 22px rgba(41, 32, 25, 0.06);
-      transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 98px;
     }
 
     .article-card::before {
@@ -795,6 +797,7 @@ function renderHtml(articles) {
     :root[data-density="compact"] .article-card,
     :root[data-density="compact"] .article-card a {
       min-height: 76px;
+      contain-intrinsic-size: auto 76px;
     }
 
     :root[data-density="compact"] .article-card a {
@@ -1042,6 +1045,7 @@ function renderHtml(articles) {
   </style>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
   <header class="site-header">
     <div class="header-inner">
       <div class="header-top">
@@ -1139,6 +1143,7 @@ ${buildArticleList(articles)}
         node: item,
         category: item.dataset.category,
         searchable: \`\${item.dataset.title} \${item.dataset.category}\`.toLowerCase(),
+        isVisible: true,
       }));
 
       const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -1175,10 +1180,13 @@ ${buildArticleList(articles)}
         for (const item of items) {
           const categoryMatches = activeCategory === 'all' || item.category === activeCategory;
           const searchMatches = !query || item.searchable.includes(query);
-          const isVisible = categoryMatches && searchMatches;
+          const shouldBeVisible = categoryMatches && searchMatches;
 
-          item.node.classList.toggle('is-hidden', !isVisible);
-          if (isVisible) {
+          if (shouldBeVisible !== item.isVisible) {
+            item.isVisible = shouldBeVisible;
+            item.node.classList.toggle('is-hidden', !shouldBeVisible);
+          }
+          if (shouldBeVisible) {
             visibleCount += 1;
           }
         }
@@ -1197,7 +1205,11 @@ ${buildArticleList(articles)}
         }
       });
 
-      searchInput.addEventListener('input', updateList);
+      let searchRaf = 0;
+      searchInput.addEventListener('input', () => {
+        cancelAnimationFrame(searchRaf);
+        searchRaf = requestAnimationFrame(updateList);
+      });
 
       for (const button of densityButtons) {
         button.addEventListener('click', () => setDensity(button.dataset.density));
